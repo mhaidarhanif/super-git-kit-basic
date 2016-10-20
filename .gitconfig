@@ -1,0 +1,106 @@
+# git kit basic .gitconfig
+
+[user]
+	name = Your Name
+	email = name@example.com
+	# editor = vim or nano
+	useconfigonly = true
+[core]
+	pager = less -r
+	excludesfile = ~/.gitignore
+	attributesfile = ~/.gitattributes
+	# autocrlf = input
+	# safecrlf = true
+	# quotepath = false
+[credential]
+	helper = store
+[alias]
+	alias	= !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | sort
+	master = checkout master
+	develop = checkout develop
+	create-branch = !sh -c 'git push origin HEAD:refs/heads/$1 && git fetch origin && git branch --track $1 origin/$1 && cd . && git checkout $1' -
+	delete-branch = !sh -c 'git push origin :refs/heads/$1 && git branch -D $1' -
+	merge-branch = !git checkout master && git merge @{-1}
+	a  = !git add -A && git status
+	aa = !git add -A && git add -u && git status
+	ac = !git add -A && git commit
+	au = !git add -u && git status
+	al = add --all
+	ap = add --patch
+	b  = branch
+	c  = commit
+	ca = commit --amend
+	cv = commit -v
+	cl = clone --recursive
+	cl1 = clone --depth=1 --recursive
+	cm = commit -m
+	co = checkout
+	cod = co --
+	cb = checkout -b
+	cs = commit -S
+	d  = log --diff-filter=D -- $1
+	di = diff
+	diff = diff --color-words
+	h  = log
+	hist = log
+	history = log --oneline --graph --decorate
+	l  = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar'
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	ll = log --stat --abbrev-commit --show-signature
+	lo = log --oneline --graph --decorate
+	push  = !git pull && git push --tags
+	p  = push
+	pf = push -f
+	pu = push -u
+	pr = !hub pull-request
+	r  = !git ls-files -z --deleted | xargs -0 git rm
+	re = reset HEAD
+	rem = remote
+	s  = status
+	st = status
+	size = count-objects -v
+	up = !git fetch origin && git rebase origin/master
+	amend  = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
+	ignore = !([ ! -e .gitignore ] && touch .gitignore) | echo $1 >>.gitignore
+	log = !git log --oneline --graph --decorate
+[color]
+	diff   = auto
+	status = auto
+	branch = auto
+	ui = auto
+	interactive = auto
+[push]
+	default = simple
+[include]
+	path = .gitconfig.local
+[commit]
+	template = ~/.gitmessage
+[fetch]
+	prune = true
+[http]
+	sslverify = false
+[push]
+	default = simple
+[diff]
+	algorithm = histogram
+[multi]
+	groupbyoutput = 1
+[branch "master"]
+	rebase = true
+[branch]
+	autosetuprebase = always
+[hub]
+	protocol = https
+[filter "lfs"]
+	smudge = git-lfs smudge %f
+	required = true
+	clean = git-lfs clean %f
+
+# http://git-scm.com
+# http://git-legit.org
+# https://github.com/github/gitignore
+# https://help.github.com/articles/ignoring-files
+# https://help.github.com/articles/dealing-with-line-endings
+# http://gitimmersion.com
+# http://oli.jp/2012/git-powerup
+# http://blog.blindgaenger.net/advanced_git_aliases.html
